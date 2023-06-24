@@ -1,6 +1,3 @@
-Certainly! Here's the README content in a format that you can directly copy and paste into your README file:
-
-```
 # Brewnbeer HTML/CSS Gulp Boilerplate
 
 **Brewnbeer HTML/CSS Gulp Boilerplate** is a standardized boilerplate that serves as a foundation for creating HTML/CSS projects. It provides a set of tools and configurations to streamline the development process.
