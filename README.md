@@ -24,19 +24,28 @@ Brewnbeer HTML/SCSS/CSS Boilerplate is a lightweight and customizable boilerplat
 
 The Brewnbeer boilerplate follows a specific file structure to keep your project organized:
 Brewnbeer HTML/SCSS/CSS Boilerplate
+Brewnbeer HTML/SCSS/CSS Boilerplate
 │
 ├── dist/
 │   ├── css/
-│   ├── assets/
+│   │   └── assets/
 │   ├── js/
-│   ├── index.html
-│   └── ...
+│   └── index.html
 │
 ├── src/
 │   ├── assets/
+│   │   └── fonts/
+│   │   └── favicons/
+│   │   └── ...
 │   ├── styles/
+│   │   └── main.scss
+│   │   └── ...
 │   ├── js/
+│   │   └── main.js
+│   │   └── ...
 │   ├── html/
+│   │   └── index.html
+│   │   └── ...
 │   └── ...
 │
 ├── gulpfile.js
@@ -44,6 +53,7 @@ Brewnbeer HTML/SCSS/CSS Boilerplate
 ├── package.json
 ├── .gitignore
 └── README.md
+
 
 
 ## Installation
