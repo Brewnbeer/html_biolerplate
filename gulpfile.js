@@ -1,3 +1,12 @@
+/*!
+ * Gulp SMPL Layout Builder
+ *
+ * @version 1.0 (lite)
+ * @author Aditya Sutar | Brewnbeer
+ * @type Module gulp
+ * @license The MIT License (MIT)
+ */
+
 const gulp = require("gulp");
 const sass = require("gulp-sass")(require("sass"));
 const autoprefixer = require("gulp-autoprefixer");
