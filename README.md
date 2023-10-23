@@ -1,119 +1,74 @@
-# Brewnbeer HTML/SCSS/CSS Boilerplate
+# Brewnbeer html biolerplate
 
-Brewnbeer HTML/SCSS/CSS Boilerplate is a lightweight and customizable boilerplate for developing HTML-based projects with SCSS and CSS. It provides a structured file organization and useful build tasks using Gulp.
-
-## Table of Contents
-
-- [Features](#features)
-- [File Structure](#file-structure)
-- [Installation](#installation)
-- [Usage](#usage)
-- [Customization](#customization)
-- [Contributing](#contributing)
-- [License](#license)
-
-## Features
-
-- Preconfigured Gulp tasks for compiling SCSS, optimizing CSS, minifying HTML, and bundling JavaScript using Webpack.
-- Automatic prefixing of CSS properties for better cross-browser compatibility.
-- Live reloading during development using BrowserSync.
-- Asset copying for fonts, favicons, and additional assets.
-- Integration of popular libraries like GSAP and SmoothScrollbar.
-
-## File Structure
-
-The Brewnbeer boilerplate follows a specific file structure to keep your project organized:
-Brewnbeer HTML/SCSS/CSS Boilerplate
-
-```bash
-Brewnbeer HTML/SCSS/CSS Boilerplate
-├── dist/                 # The distribution folder where compiled and optimized files will be placed.
-│   ├── css/              # Compiled CSS files will be placed here.
-│   ├── assets/           # Additional CSS assets folder.
-│   ├── js/               # Compiled JavaScript files will be placed here.
-│   └── index.html        # Main HTML file for distribution.
-│
-├── src/                  # Source code folder where you will work on your project.
-│   ├── assets/           # Folder for various assets used in the project.
-│   │   ├── fonts/        # Font files go here.
-│   │   ├── favicons/     # Favicon files go here.
-│   │   └── ...           # Other asset folders (e.g., images) go here.
-│   ├── styles/           # Folder for SCSS files.
-│   │   ├── main.scss     # Main SCSS file, all SCSS files will be imported here.
-│   │   └── ...           # Other SCSS files go here.
-│   ├── js/               # Folder for JavaScript files.
-│   │   ├── main.js       # Main JavaScript file, other JS files will be imported here.
-│   │   └── ...           # Other JavaScript files go here.
-│   ├── html/             # Folder for HTML files.
-│   │   ├── index.html    # Main HTML file, other HTML files will be placed here.
-│   │   └── ...           # Other HTML files go here.
-│   └── ...               # Other folders (e.g., subpages) go here.
-│
-├── gulpfile.js           # Gulp tasks for task automation.
-├── webpack.config.js     # Webpack configuration for bundling JavaScript modules.
-├── package.json          # NPM package configuration and dependencies.
-├── .gitignore            # Specifies intentionally untracked files to ignore when using Git.
-└── README.md             # Project README file containing project details and instructions.
-
-```
-
-
+This boilerplate provides a set of Gulp tasks to automate your development workflow, tailored specifically for Brewnbeer.
 
 ## Installation
 
-1. Clone the repository:
+To get started with this project, follow these steps:
 
-   ```bash
-   git clone https://github.com/your-username/brewnbeer-boilerplate.git
-   ```
+1. Clone the repository to your local machine.
+2. Install the required dependencies by running `npm install`.
 
-2. Change into the project directory:
+## Usage
 
-   ```bash
-  cd brewnbeer
-   ```
-   
-3. Install the project dependencies:
-
-   ```bash
-   npm install
-   ```
- 
 ### Development
 
-To start the development server and watch for changes in SCSS, JavaScript, and HTML files, run the following command:
- ```bash
-   gulp
-   ```
-or
- ```bash
-   npx gulp
-   ```
+To start the development server with live reloading, run:
 
-# Gulp Tasks
+```bash
+gulp serve
+```
 
-gulp-sass
-* Compiles SCSS files, autoprefixes, minifies, and generates CSS files in the dist/css directory.
+This will spin up a local server, watch for changes in your source files, and automatically reload the browser.
 
-gulp js
-* Bundles JavaScript files using Webpack and outputs the result to the dist/js directory.
+### Build
 
-gulp html
-* Minifies HTML files and copies them to the dist directory.
+To build the project for production, run:
 
-gulp copyFonts
-* Copies font files from the `src/assets/fonts folder` to the `dist/css/assets/fonts` directory.
+```bash
+gulp build
+```
 
-gulp copyFavicons
-* Copies favicon files from the `src/assets/favicons` folder to the dist directory.
+This will process and optimize all the necessary files and output them to the `dist` directory.
 
-gulp copyAssets
-* Copies additional asset files (e.g., PNG, SVG) from the `src/assets` folder to the `dist/assets` directory.
+### Deployment (Firebase)
 
-gulp copyGSAP
-* Copies GSAP library files from `node_modules/gsap/dist` to the `dist/js` directory.
+To deploy the project to Firebase, run:
 
-gulp copySmoothScrollbar
-* Copies SmoothScrollbar library files from `node_modules/smooth-scrollbar/dist` to the `dist/js` directory.
+```bash
+gulp deployFirebase
+```
 
+This task will execute the Firebase deploy command, making your project live.
 
+## Project Structure
+
+- **src/**
+  - **styles/**: Contains SCSS files.
+  - **js/**: Contains JavaScript files.
+  - **pug/**: Contains Pug templates.
+  - **assets/**
+    - **fonts/**: Contains font files.
+    - **favicons/**: Contains favicon files.
+    - **imgs/**: Contains image files.
+    - **icons/**: Contains icon files.
+- **dist/**: Output directory for compiled files.
+
+## Available Tasks
+
+- `copyFonts`: Copies font files to the output directory.
+- `copyFavicons`: Copies favicon files to the output directory.
+- `copyImgs`: Copies image files to the output directory.
+- `copyAssets`: Copies additional asset folders to the output directory.
+- `copyPackageJson`: Copies `package.json` to the output directory.
+- `compileSass`: Compiles SCSS files to CSS, autoprefixes, minifies, and renames.
+- `bundleJS`: Bundles JavaScript files using Webpack.
+- `minifyPug`: Minifies Pug templates.
+- `serve`: Starts a local server with live reloading.
+- `deployFirebase`: Deploys the project to Firebase.
+- `build`: Builds the project for production.
+- `default`: Default task that builds the project and starts the server.
+
+## License
+
+This project is licensed under the [MIT License](LICENSE).
