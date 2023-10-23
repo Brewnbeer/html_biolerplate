@@ -1,20 +1,10 @@
-const path = require("path");
-const glob = require("glob");
+const path = require('path');
 
 module.exports = {
-  mode: "production", // Set the mode to 'production' or 'development' as needed
-  entry: {
-    ...getEntryPoints()
-  },
+  entry: './src/js/main.js', // Adjust the entry point based on your project structure
   output: {
-    filename: "[name].bundle.js",
-    path: path.resolve(__dirname, "dist/js") // Adjust the output path as needed
-  },
-  resolve: {
-    alias: {
-      gsap: path.resolve(__dirname, "node_modules/gsap/dist/gsap.min.js"), // Update the path to point to your root gsap module
-      "smooth-scrollbar": "smooth-scrollbar/dist/smooth-scrollbar.js"
-    }
+    filename: 'bundle.js',
+    path: path.resolve(__dirname, 'dist/js'),
   },
   module: {
     rules: [
@@ -22,24 +12,12 @@ module.exports = {
         test: /\.js$/,
         exclude: /node_modules/,
         use: {
-          loader: "babel-loader",
+          loader: 'babel-loader',
           options: {
-            presets: ["@babel/preset-env"]
+            presets: ['@babel/preset-env']
           }
         }
       }
     ]
   }
 };
-
-function getEntryPoints() {
-  const entryPoints = {};
-  const files = glob.sync("src/js/**/*.js");
-
-  files.forEach((file) => {
-    const entryName = file.replace("src/js/", "").replace(".js", "");
-    entryPoints[entryName] = path.resolve(__dirname, file);
-  });
-
-  return entryPoints;
-}
