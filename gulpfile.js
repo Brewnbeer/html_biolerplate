@@ -1,8 +1,8 @@
 /*!
  * Gulp SMPL Layout Builder
  *
- * @version 1.0 (lite)
- * @author Aditya Sutar | Brewnbeer
+ * @version 1.0.0
+ * @author Aditya Sutar (Draft)
  * @type Module gulp
  * @license The MIT License (MIT)
  */
@@ -11,60 +11,83 @@ const gulp = require("gulp");
 const sass = require("gulp-sass")(require("sass"));
 const autoprefixer = require("gulp-autoprefixer");
 const cleanCSS = require("gulp-clean-css");
-const htmlmin = require("gulp-htmlmin");
+const pug = require("gulp-pug");
 const rename = require("gulp-rename");
 const webpackStream = require("webpack-stream");
 const webpackConfig = require("./webpack.config.js");
 const connect = require("gulp-connect");
 const browserSync = require("browser-sync").create();
+const shell = require("gulp-shell");
 
-const gsap = require("gsap");
+// Define paths
+const paths = {
+  src: {
+    styles: "src/styles/**/*.scss",
+    scripts: ["src/js/**/*.js", "!src/js/**/node_modules/**"],
+    pug: "src/pug/**/*.pug",
+    fonts: "src/assets/fonts/**/*",
+    favicons: "src/assets/favicons/**/*",
+    imgs: "src/assets/imgs/**/*",
+    additionalAssets: [
+      "src/assets/imags/**/*.png",
+      "src/assets/imags/**/*.jpg",
+      "src/assets/imags/**/*.jpeg",
+      "src/assets/imags/**/*.svg",
+    ],
+    packageJson: "package.json",
+  },
+  dest: {
+    css: "dist/styles",
+    js: "dist/js",
+    html: "dist",
+    fonts: "dist/fonts",
+    favicons: "dist",
+    imgs: "dist/assets/imgs",
+    additionalAssets: "dist/assets",
+  },
+};
 
 // Copy font files task
 gulp.task("copyFonts", function () {
-  return gulp
-    .src("src/assets/fonts/**/*")
-    .pipe(gulp.dest("dist/css/assets/fonts"));
+  return gulp.src(paths.src.fonts).pipe(gulp.dest(paths.dest.fonts));
 });
 
 // Copy favicon files task
 gulp.task("copyFavicons", function () {
-  return gulp.src("src/assets/favicons/**/*").pipe(gulp.dest("dist"));
+  return gulp.src(paths.src.favicons).pipe(gulp.dest(paths.dest.favicons));
+});
+
+// Copy img task
+gulp.task("copyImgs", function () {
+  return gulp.src(paths.src.imgs).pipe(gulp.dest(paths.dest.imgs));
 });
 
 // Copy additional asset folders task
 gulp.task("copyAssets", function () {
   return gulp
-    .src(["src/assets/**/*.png", "src/assets/**/*.svg"])
-    .pipe(gulp.dest("dist/assets"));
+    .src(paths.src.additionalAssets)
+    .pipe(gulp.dest(paths.dest.additionalAssets));
 });
 
-// Copy GSAP files task
-gulp.task("copyGSAP", function () {
-  return gulp.src("node_modules/gsap/dist/**/*.js").pipe(gulp.dest("dist/js"));
-});
-
-// Copy SmoothScrollbar files task
-gulp.task("copySmoothScrollbar", function () {
-  return gulp
-    .src("node_modules/smooth-scrollbar/dist/smooth-scrollbar.js")
-    .pipe(gulp.dest("dist/js"));
+// Copy package.json to dist task
+gulp.task("copyPackageJson", function () {
+  return gulp.src(paths.src.packageJson).pipe(gulp.dest(paths.dest.html));
 });
 
 // Compile Sass task
-gulp.task("sass", function () {
+gulp.task("compileSass", function () {
   return gulp
-    .src("src/styles/**/*.scss")
+    .src(paths.src.styles)
     .pipe(sass().on("error", sass.logError))
     .pipe(autoprefixer())
     .pipe(cleanCSS())
     .pipe(rename({ extname: ".min.css" }))
-    .pipe(gulp.dest("dist/css"))
+    .pipe(gulp.dest(paths.dest.css))
     .pipe(browserSync.stream());
 });
 
 // Bundle JS task
-gulp.task("js", function () {
+gulp.task("bundleJS", function () {
   return gulp
     .src(["src/js/**/*.js", "!src/js/**/node_modules/**"]) // Exclude the node_modules directory
     .pipe(webpackStream(webpackConfig))
@@ -72,12 +95,12 @@ gulp.task("js", function () {
     .pipe(browserSync.stream());
 });
 
-// Minify HTML task
-gulp.task("html", function () {
+// Minify pug task
+gulp.task("minifyPug", function () {
   return gulp
-    .src("src/html/**/*.html")
-    .pipe(htmlmin())
-    .pipe(gulp.dest("dist"))
+    .src(paths.src.pug)
+    .pipe(pug())
+    .pipe(gulp.dest(paths.dest.html))
     .pipe(browserSync.stream());
 });
 
@@ -93,21 +116,24 @@ gulp.task("serve", function () {
             res.setHeader("Content-Type", "text/css");
           }
           next();
-        }
+        },
       ];
-    }
+    },
   });
 
   browserSync.init({
     proxy: "localhost:8080",
     open: true,
-    serveStatic: ["."]
+    serveStatic: ["."],
   });
 
-  gulp.watch("src/styles/**/*.scss", gulp.series("sass"));
-  gulp.watch("src/js/**/*.js", gulp.series("js"));
-  gulp.watch("src/html/**/*.html", gulp.series("html"));
+  gulp.watch(paths.src.styles, gulp.series("compileSass"));
+  gulp.watch(paths.src.scripts, gulp.series("bundleJS"));
+  gulp.watch(paths.src.pug, gulp.series("minifyPug"));
 });
+
+// Deploy to Firebase task
+gulp.task("deployFirebase", shell.task(["firebase deploy"]));
 
 // Build task
 gulp.task(
@@ -115,10 +141,10 @@ gulp.task(
   gulp.series(
     "copyFonts",
     "copyFavicons",
+    "copyImgs",
     "copyAssets",
-    "copyGSAP",
-    "copySmoothScrollbar",
-    gulp.parallel("sass", "js", "html")
+    "copyPackageJson",
+    gulp.parallel("compileSass", "bundleJS", "minifyPug")
   )
 );
 
