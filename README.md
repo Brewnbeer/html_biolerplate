@@ -69,6 +69,28 @@ This task will execute the Firebase deploy command, making your project live.
 - `build`: Builds the project for production.
 - `default`: Default task that builds the project and starts the server.
 
+### JS
+
+All javascript proceeds with [webpack](https://webpack.js.org/) + [Babel](https://babeljs.io/).
+
+Webpack config localed in `./webpack.{NODE_ENV}.js`.
+
+Babel config located in `./babel.config.js`.
+
+Entrypoint, by default: `./src/js/app.js`.
+
+To directly compile js use command:
+
+```
+gulp js
+```
+
+[Read webpack docs](https://webpack.js.org/concepts/).
+
+[Read Babel docs](https://babeljs.io/docs/en/).
+
+
+
 ## License
 
 This project is licensed under the [MIT License](LICENSE).
