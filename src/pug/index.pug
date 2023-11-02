@@ -3,8 +3,27 @@ extends _includes/layout
 block title
     title Brewnbeere Web Development Template
 
+block description
+    meta(name="description" content="HTML biolerplate by Brewnbeer")
+
+//- Enter your unique canonical page URL
+block canonical
+    - const canonicalUrl = "https;//brewnbeer.com/"
+    if canonicalUrl
+        link(rel="canonical", href=canonicalUrl)
+
 block content
-    div.home-page
-        div.content
-            h1 Running web development template
+    .home-page
+        .content
+            img(src="/assets/imgs/Brewnbeer-color.png" alt="Brewnbeer official logo")
+            br
+            h1 
+                | Build with
+            .grid
+                a(href="https://pugjs.org/api/getting-started.html", target="_blank", rel="noopener noreferrer") 
+                    img(src="https://cdn.worldvectorlogo.com/logos/pug.svg" alt="")
+                a(href="https://webpack.js.org/", target="_blank", rel="noopener noreferrer") 
+                    img(src="https://cdn.worldvectorlogo.com/logos/webpack.svg" alt="")
+                a(href="https://gsap.com/", target="_blank", rel="noopener noreferrer") 
+                    img(src="https://cdn.worldvectorlogo.com/logos/gsap-greensock.svg" alt="")
     link(rel="stylesheet" href="/styles/pages/home-page.module.min.css")
