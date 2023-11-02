@@ -4,6 +4,11 @@
 }
 
 @font-face {
+  font-family: "Poppins-Regular";
+  src: url("/fonts/Poppins-Regular.ttf") format("truetype");
+}
+
+@font-face {
   font-family: "Poppins-Medium";
   src: url("/fonts/Poppins-Medium.ttf") format("truetype");
 }
@@ -12,3 +17,6 @@
   font-family: "Poppins-SemiBold";
   src: url("/fonts/Poppins-SemiBold.ttf") format("truetype");
 }
+
+
+// Also can import fonts directly here
