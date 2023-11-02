@@ -90,6 +90,12 @@ gulp js
 [Read Babel docs](https://babeljs.io/docs/en/).
 
 
+### Browsersync
+
+Browsersync creates a small server for local development with live reloading. If Browsersync detects changes in code, it makes a local rebuild and reloads the page (complete or partial).
+
+[See Browsersync options](https://browsersync.io/docs).
+
 
 ## License
 
