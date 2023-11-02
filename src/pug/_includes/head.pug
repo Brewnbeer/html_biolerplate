@@ -1,7 +1,12 @@
+//- Global head 
 head
     meta(charset='utf-8')
+    meta(name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=3.0')
     block title
         title Title
-    meta(name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=3.0')
+    block description
+        meta(name="description" content="#{pageDescription}")
     block canonical
     link(rel="stylesheet" href="/styles/base.min.css")
+    script(src="/js/bundle.js") 
+    //- Can also include the remaining SEO tags such as favicons and social card tags.
