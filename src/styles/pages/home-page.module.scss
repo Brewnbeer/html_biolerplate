@@ -6,7 +6,7 @@
 
   .content {
     width: 100%;
-    height: 75vh;
+    height: 100vh;
     max-width: 1100px;
     margin: auto;
     display: flex;
@@ -14,9 +14,33 @@
     align-items: center;
     justify-content: center;
 
+    img {
+      width: 500px;
+      height: max-content;
+    }
+
     h1 {
-      font-family: "Poppins-Medium";
-      font-size: 30px;
+      font-family: "Poppins-Regular";
+      font-size: xx-large;
+      margin: 5rem 0 0 0;
+    }
+
+    .grid {
+      width: 100%;
+      display: grid;
+      grid-template-columns: auto auto auto;
+      column-gap: 30px;
+      align-items: center;
+      justify-content: space-between;
+      margin: 5rem 0 0 0;
+
+      img {
+        width: 250px;
+        height: 250px;
+        object-fit: fill;
+        align-items: center;
+        justify-content: center;
+      }
     }
   }
 }
