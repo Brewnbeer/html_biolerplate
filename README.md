@@ -95,7 +95,3 @@ gulp js
 
 This project is licensed under the [MIT License](LICENSE).
 
-## Contributors
-
-Thanks to the following people who have contributed to this project:
-- [Aditya Sutar](https://github.com/aditya305)
