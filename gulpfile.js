@@ -17,7 +17,9 @@ const webpackStream = require("webpack-stream");
 const webpackConfig = require("./webpack.config.js");
 const connect = require("gulp-connect");
 const browserSync = require("browser-sync").create();
-const shell = require("gulp-shell");
+const http = require("http-server");
+const clean = require("gulp-clean");
+const prettify = require("gulp-prettify");
 
 // Define paths
 const paths = {
@@ -27,12 +29,11 @@ const paths = {
     pug: "src/pug/**/*.pug",
     fonts: "src/assets/fonts/**/*",
     favicons: "src/assets/favicons/**/*",
-    imgs: "src/assets/imgs/**/*",
     additionalAssets: [
-      "src/assets/imags/**/*.png",
-      "src/assets/imags/**/*.jpg",
-      "src/assets/imags/**/*.jpeg",
-      "src/assets/imags/**/*.svg",
+      "src/assets/**/*.png",
+      "src/assets/**/*.jpg",
+      "src/assets/**/*.jpeg",
+      "src/assets/**/*.svg",
     ],
     packageJson: "package.json",
   },
@@ -42,40 +43,34 @@ const paths = {
     html: "dist",
     fonts: "dist/fonts",
     favicons: "dist",
-    imgs: "dist/assets/imgs",
     additionalAssets: "dist/assets",
   },
 };
 
 // Copy font files task
-gulp.task("copyFonts", function () {
+function copyFonts() {
   return gulp.src(paths.src.fonts).pipe(gulp.dest(paths.dest.fonts));
-});
+}
 
 // Copy favicon files task
-gulp.task("copyFavicons", function () {
+function copyFavicons() {
   return gulp.src(paths.src.favicons).pipe(gulp.dest(paths.dest.favicons));
-});
-
-// Copy img task
-gulp.task("copyImgs", function () {
-  return gulp.src(paths.src.imgs).pipe(gulp.dest(paths.dest.imgs));
-});
+}
 
 // Copy additional asset folders task
-gulp.task("copyAssets", function () {
+function copyAssets() {
   return gulp
     .src(paths.src.additionalAssets)
     .pipe(gulp.dest(paths.dest.additionalAssets));
-});
+}
 
 // Copy package.json to dist task
-gulp.task("copyPackageJson", function () {
+function copyPackageJson() {
   return gulp.src(paths.src.packageJson).pipe(gulp.dest(paths.dest.html));
-});
+}
 
 // Compile Sass task
-gulp.task("compileSass", function () {
+function sassTask() {
   return gulp
     .src(paths.src.styles)
     .pipe(sass().on("error", sass.logError))
@@ -84,28 +79,38 @@ gulp.task("compileSass", function () {
     .pipe(rename({ extname: ".min.css" }))
     .pipe(gulp.dest(paths.dest.css))
     .pipe(browserSync.stream());
-});
+}
 
 // Bundle JS task
-gulp.task("bundleJS", function () {
+function jsTask() {
   return gulp
-    .src(["src/js/**/*.js", "!src/js/**/node_modules/**"]) // Exclude the node_modules directory
+    .src(paths.src.scripts)
     .pipe(webpackStream(webpackConfig))
-    .pipe(gulp.dest("dist/js"))
+    .pipe(gulp.dest(paths.dest.js))
     .pipe(browserSync.stream());
-});
+}
+
+// Compile 404 Pug task
+function pug404Task() {
+  return gulp
+    .src("src/pug/404.pug")
+    .pipe(pug())
+    .pipe(rename("404.html")) // Rename the output file to 404.html
+    .pipe(gulp.dest(paths.dest.html))
+    .pipe(browserSync.stream());
+}
 
 // Minify pug task
-gulp.task("minifyPug", function () {
+function pugTask() {
   return gulp
     .src(paths.src.pug)
     .pipe(pug())
     .pipe(gulp.dest(paths.dest.html))
     .pipe(browserSync.stream());
-});
+}
 
 // Serve task
-gulp.task("serve", function () {
+function serveTask() {
   connect.server({
     root: "dist",
     livereload: true,
@@ -122,31 +127,68 @@ gulp.task("serve", function () {
   });
 
   browserSync.init({
-    proxy: "localhost:8080",
+    server: {
+      baseDir: "dist",
+    },
     open: true,
-    serveStatic: ["."],
   });
 
-  gulp.watch(paths.src.styles, gulp.series("compileSass"));
-  gulp.watch(paths.src.scripts, gulp.series("bundleJS"));
-  gulp.watch(paths.src.pug, gulp.series("minifyPug"));
-});
+  gulp.watch(paths.src.styles, gulp.series(sassTask));
+  gulp.watch(paths.src.scripts, gulp.series(jsTask));
+  gulp.watch(paths.src.pug, gulp.series(pugTask));
+}
 
-// Deploy to Firebase task
-gulp.task("deployFirebase", shell.task(["firebase deploy"]));
+// HTTP server task
+function httpServerTask() {
+  return http
+    .createServer({
+      root: "./dist",
+      port: 8080,
+      cache: 1,
+      robots: true,
+      headers: {
+        "Access-Control-Allow-Origin": "*",
+        // Add any additional headers here
+      },
+    })
+    .listen(8080);
+}
+
+// Clean task
+function cleanTask() {
+  return gulp.src("dist", { read: false, allowEmpty: true }).pipe(clean());
+}
+
+// Prettify HTML task
+function prettifyHtmlTask() {
+  return gulp
+    .src(`${paths.dest.html}/**/*.html`)
+    .pipe(prettify({ indent_size: 2 }))
+    .pipe(gulp.dest(paths.dest.html));
+}
 
 // Build task
-gulp.task(
-  "build",
-  gulp.series(
-    "copyFonts",
-    "copyFavicons",
-    "copyImgs",
-    "copyAssets",
-    "copyPackageJson",
-    gulp.parallel("compileSass", "bundleJS", "minifyPug")
-  )
+const build = gulp.series(
+  cleanTask,
+  gulp.parallel(
+    copyFonts,
+    copyFavicons,
+    copyAssets,
+    copyPackageJson,
+    sassTask,
+    jsTask,
+    pugTask,
+    pug404Task
+  ),
+  prettifyHtmlTask
 );
 
 // Default task
-gulp.task("default", gulp.series("build", "serve"));
+const defaultTask = gulp.series(
+  build,
+  gulp.parallel(serveTask, httpServerTask)
+);
+
+gulp.task("clean", cleanTask);
+gulp.task("build", build);
+gulp.task("default", defaultTask);

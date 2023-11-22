@@ -1,16 +1,17 @@
+// webpack.config.js
 const path = require("path");
 const glob = require("glob");
 
 module.exports = {
-  mode: "production",
-  entry: { ...getEntryPoints() },
+  mode: "production", // or "development" for non-minified output
+  entry: glob.sync("./src/js/**/*.js").reduce((acc, filePath) => {
+    const entryName = path.relative("./src/js", filePath).replace(/\.js$/, '');
+    acc[entryName] = path.resolve(__dirname, filePath);
+    return acc;
+  }, {}),
   output: {
     filename: "[name].bundle.js",
     path: path.resolve(__dirname, "dist/js"),
-  },
-  resolve: {
-    extensions: [".js"],
-    modules: [path.resolve(__dirname, "src/js"), "node_modules"],
   },
   module: {
     rules: [
@@ -27,15 +28,3 @@ module.exports = {
     ],
   },
 };
-
-function getEntryPoints() {
-  const entryPoints = {};
-  const files = glob.sync("src/js/**/*.js");
-
-  files.forEach((file) => {
-    const entryName = path.basename(file, ".js", "");
-    entryPoints[entryName] = path.resolve(__dirname, file);
-  });
-
-  return entryPoints;
-}
