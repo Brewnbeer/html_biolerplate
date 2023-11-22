@@ -95,6 +95,7 @@ This will compile Sass, bundle JavaScript, compile Pug, and start a development 
 
 ## License
 This project is licensed under the MIT License - see the LICENSE file for details.
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)]([https://opensource.org/licenses/MIT](https://github.com/Brewnbeer/html_biolerplate/blob/main/LICENSE)https://github.com/Brewnbeer/html_biolerplate/blob/main/LICENSE)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://github.com/Brewnbeer/html_biolerplate/blob/main/LICENSE)
+
 
 
