@@ -1,103 +1,100 @@
-# Brewnbeer html biolerplate
+# Brewnbeer - HTML Boilerplate
 
-This boilerplate provides a set of Gulp tasks to automate your development workflow, tailored specifically for Brewnbeer.
+![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)
+![GitHub release](https://img.shields.io/badge/release-1.0.0-brightgreen.svg)
+![Node.js Version](https://img.shields.io/badge/node-%3E%3D%2012.0.0-brightgreen.svg)
+![npm version](https://img.shields.io/badge/npm-%3E%3D%206.0.0-brightgreen.svg)
 
-## Installation
+HTML Boilerplate is a simple and efficient starting point for web development projects. It provides a Gulp-based build system with tasks for compiling Sass, bundling JavaScript with Webpack, compiling Pug templates, and more.
 
-To get started with this project, follow these steps:
+## Table of Contents
 
-1. Clone the repository to your local machine.
-2. Install the required dependencies by running `npm install`.
+- [Features](#features)
+- [Prerequisites](#prerequisites)
+- [Getting Started](#getting-started)
+- [Usage](#usage)
+- [Tasks](#tasks)
+- [License](#license)
 
+## Features
+
+- **Sass Compilation:** Compile and minify Sass files with autoprefixer.
+- **JavaScript Bundling:** Bundle JavaScript files using Webpack.
+- **Pug Compilation:** Compile Pug templates to HTML.
+- **Asset Copying:** Copy fonts, favicons, and additional assets to the `dist` directory.
+- **Server and Live Reload:** Serve the project locally with live reloading.
+- **HTTP Server:** Start an HTTP server for production-like testing.
+- **Clean Task:** Clean the `dist` directory.
+- **HTML Prettify:** Prettify HTML files for better readability.
+
+## Prerequisites
+
+Ensure you have the following installed on your machine:
+
+- Node.js (version >= 12.0.0)
+- npm (version >= 6.0.0)
+- Gulp CLI (install globally with `npm install -g gulp-cli`)
+
+## Getting Started
+
+1. Clone this repository:
+
+```bash
+git clone https://github.com/your-username/html_boilerplate.git
+cd html_boilerplate
+```
+2. Install dependencies:
+
+```bash
+npm install
+```
 ## Usage
 
-### Development
+### Development Build
 
-To start the development server with live reloading, run:
-
-```bash
-gulp serve
-```
-
-This will spin up a local server, watch for changes in your source files, and automatically reload the browser.
-
-### Build
-
-To build the project for production, run:
+Run the following command to build the project for development and start the development server:
 
 ```bash
-gulp build
+gulp or npx gulp
 ```
-
-This will process and optimize all the necessary files and output them to the `dist` directory.
-
-### Deployment (Firebase)
-
-To deploy the project to Firebase, run:
-
-```bash
-gulp deployFirebase
-```
-
-This task will execute the Firebase deploy command, making your project live.
-
-## Project Structure
-
-- **src/**
-  - **styles/**: Contains SCSS files.
-  - **js/**: Contains JavaScript files.
-  - **pug/**: Contains Pug templates.
-  - **assets/**
-    - **fonts/**: Contains font files.
-    - **favicons/**: Contains favicon files.
-    - **imgs/**: Contains image files.
-    - **icons/**: Contains icon files.
-- **dist/**: Output directory for compiled files.
-
-## Available Tasks
-
-- `copyFonts`: Copies font files to the output directory.
-- `copyFavicons`: Copies favicon files to the output directory.
-- `copyImgs`: Copies image files to the output directory.
-- `copyAssets`: Copies additional asset folders to the output directory.
-- `copyPackageJson`: Copies `package.json` to the output directory.
-- `compileSass`: Compiles SCSS files to CSS, autoprefixes, minifies, and renames.
-- `bundleJS`: Bundles JavaScript files using Webpack.
-- `minifyPug`: Minifies Pug templates.
-- `serve`: Starts a local server with live reloading.
-- `deployFirebase`: Deploys the project to Firebase.
-- `build`: Builds the project for production.
-- `default`: Default task that builds the project and starts the server.
-
-### JS
-
-All javascript proceeds with [webpack](https://webpack.js.org/) + [Babel](https://babeljs.io/).
-
-Webpack config localed in `./webpack.{NODE_ENV}.js`.
-
-Babel config located in `./babel.config.js`.
-
-Entrypoint, by default: `./src/js/app.js`.
-
-To directly compile js use command:
-
-```
-gulp js
-```
-
-[Read webpack docs](https://webpack.js.org/concepts/).
-
-[Read Babel docs](https://babeljs.io/docs/en/).
+This will compile Sass, bundle JavaScript, compile Pug, and start a development server with live reloading.
 
 
-### Browsersync
+## Tasks
 
-Browsersync creates a small server for local development with live reloading. If Browsersync detects changes in code, it makes a local rebuild and reloads the page (complete or partial).
+### List of Available Tasks
 
-[See Browsersync options](https://browsersync.io/docs).
+- **`gulp copyFonts`**: Copy font files to the `dist/fonts` directory.
+
+- **`gulp copyFavicons`**: Copy favicon files to the `dist` directory.
+
+- **`gulp copyAssets`**: Copy additional asset folders to the `dist/assets` directory.
+
+- **`gulp copyPackageJson`**: Copy `package.json` to the `dist` directory.
+
+- **`gulp sassTask`**: Compile Sass files, autoprefix, minify, and rename to `.min.css`.
+
+- **`gulp jsTask`**: Bundle JavaScript files using Webpack.
+
+- **`gulp pugTask`**: Compile Pug templates to HTML.
+
+- **`gulp pug404Task`**: Compile the 404 Pug template to HTML.
+
+- **`gulp serveTask`**: Start a development server with live reloading.
+
+- **`gulp httpServerTask`**: Start an HTTP server for production-like testing.
+
+- **`gulp cleanTask`**: Clean the `dist` directory.
+
+- **`gulp prettifyHtmlTask`**: Prettify HTML files in the `dist` directory.
+
+- **`gulp build`**: Run tasks for a production-ready build.
+
+- **`gulp default`**: Default task that runs the development build and starts the development server.
 
 
 ## License
+This project is licensed under the MIT License - see the LICENSE file for details.
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-This project is licensed under the [MIT License](LICENSE).
 
