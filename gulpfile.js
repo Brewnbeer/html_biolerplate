@@ -17,9 +17,9 @@ const webpackStream = require("webpack-stream");
 const webpackConfig = require("./webpack.config.js");
 const connect = require("gulp-connect");
 const browserSync = require("browser-sync").create();
-const http = require("http-server");
+const shell = require("gulp-shell");
 const clean = require("gulp-clean");
-const prettify = require("gulp-prettify");
+const sitemap = require("gulp-sitemap");
 
 // Define paths
 const paths = {
@@ -90,16 +90,6 @@ function jsTask() {
     .pipe(browserSync.stream());
 }
 
-// Compile 404 Pug task
-function pug404Task() {
-  return gulp
-    .src("src/pug/404.pug")
-    .pipe(pug())
-    .pipe(rename("404.html")) // Rename the output file to 404.html
-    .pipe(gulp.dest(paths.dest.html))
-    .pipe(browserSync.stream());
-}
-
 // Minify pug task
 function pugTask() {
   return gulp
@@ -108,6 +98,20 @@ function pugTask() {
     .pipe(gulp.dest(paths.dest.html))
     .pipe(browserSync.stream());
 }
+
+// sitemap task
+gulp.task("sitemap", () => {
+  return gulp
+    .src("dist/**/*.html", {
+      read: false,
+    })
+    .pipe(
+      sitemap({
+        siteUrl: "https://flutterjobs.in",
+      })
+    )
+    .pipe(gulp.dest("dist")); // Change this line to save the sitemap in the 'dist' folder
+});
 
 // Serve task
 function serveTask() {
@@ -138,33 +142,12 @@ function serveTask() {
   gulp.watch(paths.src.pug, gulp.series(pugTask));
 }
 
-// HTTP server task
-function httpServerTask() {
-  return http
-    .createServer({
-      root: "./dist",
-      port: 8080,
-      cache: 1,
-      robots: true,
-      headers: {
-        "Access-Control-Allow-Origin": "*",
-        // Add any additional headers here
-      },
-    })
-    .listen(8080);
-}
+// Deploy to Firebase task
+const deployFirebase = shell.task(["firebase deploy"]);
 
 // Clean task
 function cleanTask() {
   return gulp.src("dist", { read: false, allowEmpty: true }).pipe(clean());
-}
-
-// Prettify HTML task
-function prettifyHtmlTask() {
-  return gulp
-    .src(`${paths.dest.html}/**/*.html`)
-    .pipe(prettify({ indent_size: 2 }))
-    .pipe(gulp.dest(paths.dest.html));
 }
 
 // Build task
@@ -178,17 +161,14 @@ const build = gulp.series(
     sassTask,
     jsTask,
     pugTask,
-    pug404Task
-  ),
-  prettifyHtmlTask
+    "sitemap"
+  )
 );
 
 // Default task
-const defaultTask = gulp.series(
-  build,
-  gulp.parallel(serveTask, httpServerTask)
-);
+const defaultTask = gulp.series(build, serveTask);
 
+gulp.task("deploy-firebase", deployFirebase);
 gulp.task("clean", cleanTask);
 gulp.task("build", build);
 gulp.task("default", defaultTask);
