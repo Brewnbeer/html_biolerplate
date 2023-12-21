@@ -31,15 +31,15 @@ gulp build
 
 This will process and optimize all the necessary files and output them to the `dist` directory.
 
-### Deployment (Firebase)
-
-To deploy the project to Firebase, run:
+### Generate Sitemap
+To generate a sitemap for your project, run:
 
 ```bash
-gulp deployFirebase
+gulp sitemap
 ```
 
-This task will execute the Firebase deploy command, making your project live.
+Reminder: Execute only after running gulp build.
+
 
 ## Project Structure
 
@@ -79,7 +79,7 @@ Babel config located in `./babel.config.js`.
 
 Entrypoint, by default: `./src/js/app.js`.
 
-To directly compile js use command:
+To directly compile js use the command:
 
 ```
 gulp js
