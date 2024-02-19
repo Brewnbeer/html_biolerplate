@@ -107,7 +107,7 @@ gulp.task("sitemap", () => {
     })
     .pipe(
       sitemap({
-        siteUrl: "https://flutterjobs.in",
+        siteUrl: "https://brewnbeer.com", // add your domain
       })
     )
     .pipe(gulp.dest("dist")); // Change this line to save the sitemap in the 'dist' folder
@@ -150,6 +150,11 @@ function cleanTask() {
   return gulp.src("dist", { read: false, allowEmpty: true }).pipe(clean());
 }
 
+// Copy robots.txt task
+function copyRobotsTxt() {
+  return gulp.src("src/extra/robots.txt").pipe(gulp.dest("dist"));
+}
+
 // Build task
 const build = gulp.series(
   cleanTask,
@@ -161,7 +166,8 @@ const build = gulp.series(
     sassTask,
     jsTask,
     pugTask,
-    "sitemap"
+    "sitemap",
+    copyRobotsTxt
   )
 );
 
