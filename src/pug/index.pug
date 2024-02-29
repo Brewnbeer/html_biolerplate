@@ -1,29 +1,39 @@
-extends _includes/layout
+extends ./_include/layout.pug
 
 block title
-    title Brewnbeere Web Development Template
+    title Brewnbeer HTML Biolerplate
 
 block description
     meta(name="description" content="HTML biolerplate by Brewnbeer")
 
-//- Enter your unique canonical page URL
 block canonical
     - const canonicalUrl = "https;//brewnbeer.com/"
     if canonicalUrl
         link(rel="canonical", href=canonicalUrl)
 
 block content
-    .home-page
-        .content
-            img(src="/assets/imgs/Brewnbeer-color.png" alt="Brewnbeer official logo")
-            br
-            h1 
-                | Build with
-            .grid
-                a(href="https://pugjs.org/api/getting-started.html" target="_blank" rel="noopener noreferrer" aria-label="") 
-                    img(src="https://cdn.worldvectorlogo.com/logos/pug.svg" alt="")
-                a(href="https://webpack.js.org/" target="_blank" rel="noopener noreferrer") 
-                    img(src="https://cdn.worldvectorlogo.com/logos/webpack.svg" alt="")
-                a(href="https://gsap.com/" target="_blank" rel="noopener noreferrer") 
-                    img(src="https://cdn.worldvectorlogo.com/logos/gsap-greensock.svg" alt="")
-    link(rel="stylesheet" href="/styles/pages/home-page.module.min.css")
+    .my-view#view-main
+        .my-layout(role="main")
+
+        nav.bb-nav
+            .bb-nav-content
+                .bb-nav-left
+                    img(src="/assets/imgs/Brewnbeer-color.png" alt="")
+                ul.bb-nav-right
+                    li Menu
+                    button.hamburger
+                        span.bar
+                        span.bar
+
+        .bb-hero-cotnainer
+            .bb-hero-cotnainer-content
+                h2.bb-heroTitle
+                    | HTML Biolerplate
+                p.bb-cc-text
+                    | &copy; 2023-2024. All rights reserved.
+
+        .bb-container-two
+
+    link(rel="stylesheet" href="/styles/pages/navbar.min.css")
+    link(rel="stylesheet" href="/styles/pages/home.module.min.css")
+    script(src="/js/main-page.bundle.js") 
