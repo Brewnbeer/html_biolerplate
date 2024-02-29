@@ -1,24 +1,26 @@
 @import "../main.scss";
 
-
-body {
-  overflow: hidden !important;
-}
-
-.containerOne {
+.bb-hero-cotnainer {
   width: 100%;
-  height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-}
+  height: max-content;
 
-.containerTwo {
-  width: 100%;
-  height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
+  .bb-hero-cotnainer-content {
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    .bb-heroTitle {
+      font-size: 3rem;
+      font-weight: bold;
+    }
+
+    .bb-cc-text {
+      font-size: 1rem;
+      margin: 1.5rem 0 0 0;
+    }
+
+  }
 }
