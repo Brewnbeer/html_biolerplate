@@ -1,7 +1,7 @@
 /*!
  * Gulp SMPL Layout Builder
  *
- * @version 1.0.0
+ * @version 2.0.0
  * @author Aditya Sutar (Draft)
  * @type Module gulp
  * @license The MIT License (MIT)
@@ -17,8 +17,9 @@ const webpackStream = require("webpack-stream");
 const webpackConfig = require("./webpack.config.js");
 const connect = require("gulp-connect");
 const browserSync = require("browser-sync").create();
-const shell = require("gulp-shell");
+const http = require("http-server");
 const clean = require("gulp-clean");
+const prettify = require("gulp-prettify");
 const sitemap = require("gulp-sitemap");
 
 // Define paths
@@ -34,6 +35,8 @@ const paths = {
       "src/assets/**/*.jpg",
       "src/assets/**/*.jpeg",
       "src/assets/**/*.svg",
+      "src/assets/**/*.webp",
+      "src/assets/**/*.mp4",
     ],
     packageJson: "package.json",
   },
@@ -73,10 +76,18 @@ function copyPackageJson() {
 function sassTask() {
   return gulp
     .src(paths.src.styles)
-    .pipe(sass().on("error", sass.logError))
+    .pipe(
+      sass({
+        includePaths: ["node_modules"],
+      }).on("error", sass.logError)
+    )
     .pipe(autoprefixer())
     .pipe(cleanCSS())
-    .pipe(rename({ extname: ".min.css" }))
+    .pipe(
+      rename({
+        extname: ".min.css",
+      })
+    )
     .pipe(gulp.dest(paths.dest.css))
     .pipe(browserSync.stream());
 }
@@ -90,6 +101,16 @@ function jsTask() {
     .pipe(browserSync.stream());
 }
 
+// Compile 404 Pug task
+function pug404Task() {
+  return gulp
+    .src("src/pug/404.pug")
+    .pipe(pug())
+    .pipe(rename("404.html")) // Rename the output file to 404.html
+    .pipe(gulp.dest(paths.dest.html))
+    .pipe(browserSync.stream());
+}
+
 // Minify pug task
 function pugTask() {
   return gulp
@@ -98,20 +119,6 @@ function pugTask() {
     .pipe(gulp.dest(paths.dest.html))
     .pipe(browserSync.stream());
 }
-
-// sitemap task
-gulp.task("sitemap", () => {
-  return gulp
-    .src("dist/**/*.html", {
-      read: false,
-    })
-    .pipe(
-      sitemap({
-        siteUrl: "https://brewnbeer.com", // add your domain
-      })
-    )
-    .pipe(gulp.dest("dist")); // Change this line to save the sitemap in the 'dist' folder
-});
 
 // Serve task
 function serveTask() {
@@ -142,13 +149,57 @@ function serveTask() {
   gulp.watch(paths.src.pug, gulp.series(pugTask));
 }
 
-// Deploy to Firebase task
-const deployFirebase = shell.task(["firebase deploy"]);
+// HTTP server task
+function httpServerTask() {
+  return http
+    .createServer({
+      root: "./dist",
+      port: 8080,
+      cache: 1,
+      robots: true,
+      headers: {
+        "Access-Control-Allow-Origin": "*",
+        // Add any additional headers here
+      },
+    })
+    .listen(8080);
+}
 
 // Clean task
 function cleanTask() {
-  return gulp.src("dist", { read: false, allowEmpty: true }).pipe(clean());
+  return gulp
+    .src("dist", {
+      read: false,
+      allowEmpty: true,
+    })
+    .pipe(clean());
 }
+
+// Prettify HTML task
+function prettifyHtmlTask() {
+  return gulp
+    .src(`dist/**/*.html`)
+    .pipe(
+      prettify({
+        indent_size: 2,
+      })
+    )
+    .pipe(gulp.dest(paths.dest.html));
+}
+
+// sitemap task
+gulp.task("sitemap", () => {
+  return gulp
+    .src("dist/**/*.html", {
+      read: false,
+    })
+    .pipe(
+      sitemap({
+        siteUrl: "https://brewnbeer.com/",
+      })
+    )
+    .pipe(gulp.dest("dist")); // Change this line to save the sitemap in the 'dist' folder
+});
 
 // Copy robots.txt task
 function copyRobotsTxt() {
@@ -166,15 +217,19 @@ const build = gulp.series(
     sassTask,
     jsTask,
     pugTask,
+    pug404Task,
     "sitemap",
     copyRobotsTxt
-  )
+  ),
+  prettifyHtmlTask
 );
 
 // Default task
-const defaultTask = gulp.series(build, serveTask);
+const defaultTask = gulp.series(
+  build,
+  gulp.parallel(serveTask, httpServerTask)
+);
 
-gulp.task("deploy-firebase", deployFirebase);
 gulp.task("clean", cleanTask);
 gulp.task("build", build);
 gulp.task("default", defaultTask);
