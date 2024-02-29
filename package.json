@@ -1,6 +1,6 @@
 {
   "name": "html_biolerplate",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "description": "Brewnbeer HTML/SCSS/CSS Boilerplate is a lightweight and customizable boilerplate for developing HTML-based projects with SCSS and CSS. It provides a structured file organization and useful build tasks using Gulp.",
   "main": "index.js",
   "scripts": {
