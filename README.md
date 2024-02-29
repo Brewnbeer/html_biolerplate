@@ -97,6 +97,13 @@ Browsersync creates a small server for local development with live reloading. If
 [See Browsersync options](https://browsersync.io/docs).
 
 
+### Custom 404 Page
+To set up a custom 404 page for your website, you can follow these steps:
+1. Create a file named 404.html in your project directory.
+1. Design and customize the content of your 404 page in this HTML file.
+3. Deploy your project to hosting.
+4. Firebase Hosting will automatically serve your custom 404 page whenever a user accesses a URL that doesn't correspond to an existing file on your website.
+
 ## License
 
 This project is licensed under the [MIT License](LICENSE).
