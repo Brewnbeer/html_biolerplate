@@ -2,8 +2,13 @@
 $color-base: #fff;
 $color-graybase: #000;
 
-$color-primary: #004af9;
+$color-primary: #a59dff;
 $color-secondary: #f8762c;
+
+//$color-fill:#F4F6F8;
+//$color-smooth:#B2B2B2;
+//$color-muted:#ECF0F3;
+//$color-disabled:#8C8C8C;
 
 $color-error: #eb4242;
 $color-info: #01d7fd;
@@ -15,6 +20,14 @@ $color-bg: $color-base;
 $color-text: #000;
 $color-link: inherit;
 $color-link-hover: inherit;
+
+/* Fonts */
+$font-family: "Roboto", sans-serif;
+$font-family-secondary: sans-serif;
+$font-size: 14px;
+$font-weight: normal;
+$letter-spacing: normal;
+$line-height: normal;
 
 /* Screen sizes */
 $screen-xs: 375px;

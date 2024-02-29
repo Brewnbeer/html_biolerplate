@@ -1,22 +1,8 @@
+// Google font
+@import url("https://fonts.googleapis.com/css?family=Roboto:300,400,700&subset=cyrillic&display=swap");
+
+// Custom font
 @font-face {
-  font-family: "Poppins-Light";
-  src: url("/fonts/Poppins-Light.ttf") format("truetype");
+  font-family: "EuclidCircularA-Medium";
+  src: url("") format("truetype");
 }
-
-@font-face {
-  font-family: "Poppins-Regular";
-  src: url("/fonts/Poppins-Regular.ttf") format("truetype");
-}
-
-@font-face {
-  font-family: "Poppins-Medium";
-  src: url("/fonts/Poppins-Medium.ttf") format("truetype");
-}
-
-@font-face {
-  font-family: "Poppins-SemiBold";
-  src: url("/fonts/Poppins-SemiBold.ttf") format("truetype");
-}
-
-
-// Also can import fonts directly here
