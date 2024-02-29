@@ -1,7 +1,7 @@
 /*!
  * Gulp SMPL Layout Builder
  *
- * @version 1.0.0
+ * @version 2.0.0
  * @author Aditya Sutar (Draft)
  * @type Module gulp
  * @license The MIT License (MIT)
