@@ -1,13 +1,13 @@
 @import "../main";
 
 .bb-nav {
-  position: absolute;
   width: 100%;
-  height: auto; // Changed to auto
+  height: max-content; // Changed to auto
 
   .bb-nav-content {
     width: 100%;
     max-width: 1200px;
+    height: max-content;
     margin: auto;
     display: flex;
     flex-direction: row;

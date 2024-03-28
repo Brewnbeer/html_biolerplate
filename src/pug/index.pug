@@ -1,39 +1,34 @@
 extends ./_include/layout.pug
 
 block title
-    title Brewnbeer HTML Biolerplate
+    title Brewnbeer HTML Boilerplate
 
 block description
-    meta(name="description" content="HTML biolerplate by Brewnbeer")
+    meta(name="description" content="HTML boilerplate by Brewnbeer")
 
 block canonical
-    - const canonicalUrl = "https;//brewnbeer.com/"
+    - const canonicalUrl = "https://brewnbeer.com/"
     if canonicalUrl
         link(rel="canonical", href=canonicalUrl)
 
 block content
     .my-view#view-main
         .my-layout(role="main")
-
-        nav.bb-nav
-            .bb-nav-content
-                .bb-nav-left
-                    img(src="/assets/imgs/Brewnbeer-color.png" alt="")
-                ul.bb-nav-right
-                    li Menu
-                    button.hamburger
-                        span.bar
-                        span.bar
-
-        .bb-hero-cotnainer
-            .bb-hero-cotnainer-content
-                h2.bb-heroTitle
-                    | HTML Biolerplate
-                p.bb-cc-text
-                    | &copy; 2023-2024. All rights reserved.
-
-        .bb-container-two
-
-    link(rel="stylesheet" href="/styles/pages/navbar.min.css")
-    link(rel="stylesheet" href="/styles/pages/home.module.min.css")
-    script(src="/js/main-page.bundle.js") 
+            .bb-nav
+                .bb-nav-content
+                    .bb-nav-left
+                        img(src="/assets/imgs/Brewnbeer-color.png" alt="")
+                    ul.bb-nav-right
+                        li Menu
+                        button.hamburger
+                            span.bar
+                            span.bar
+            .bb-hero-container
+                .bb-hero-container-content
+                    h2.bb-heroTitle
+                        | HTML Boilerplate
+                    p.bb-cc-text
+                        | &copy; 2023-2024. All rights reserved.
+            link(rel="stylesheet" href="/styles/pages/navbar.min.css")
+            link(rel="stylesheet" href="/styles/pages/home.module.min.css")
+            script(src="/js/main-page.bundle.js")
