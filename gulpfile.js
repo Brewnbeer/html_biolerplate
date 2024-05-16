@@ -9,7 +9,8 @@
 
 const gulp = require("gulp");
 const sass = require("gulp-sass")(require("sass"));
-const autoprefixer = require("gulp-autoprefixer");
+let autoprefixer;
+import('gulp-autoprefixer').then(module => autoprefixer = module.default);
 const cleanCSS = require("gulp-clean-css");
 const pug = require("gulp-pug");
 const rename = require("gulp-rename");
@@ -73,23 +74,26 @@ function copyPackageJson() {
 }
 
 // Compile Sass task
-function sassTask() {
+async function sassTask() {
+  if (!autoprefixer) {
+      autoprefixer = (await import('gulp-autoprefixer')).default;
+  }
   return gulp
-    .src(paths.src.styles)
-    .pipe(
-      sass({
-        includePaths: ["node_modules"],
-      }).on("error", sass.logError)
-    )
-    .pipe(autoprefixer())
-    .pipe(cleanCSS())
-    .pipe(
-      rename({
-        extname: ".min.css",
-      })
-    )
-    .pipe(gulp.dest(paths.dest.css))
-    .pipe(browserSync.stream());
+      .src(paths.src.styles)
+      .pipe(
+          sass({
+              includePaths: ["node_modules"],
+          }).on("error", sass.logError)
+      )
+      .pipe(autoprefixer())
+      .pipe(cleanCSS())
+      .pipe(
+          rename({
+              extname: ".min.css",
+          })
+      )
+      .pipe(gulp.dest(paths.dest.css))
+      .pipe(browserSync.stream());
 }
 
 // Bundle JS task
@@ -218,10 +222,11 @@ const build = gulp.series(
     jsTask,
     pugTask,
     pug404Task,
-    "sitemap",
+   
     copyRobotsTxt
   ),
-  prettifyHtmlTask
+  prettifyHtmlTask,
+  "sitemap",
 );
 
 // Default task
