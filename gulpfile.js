@@ -10,7 +10,7 @@
 const gulp = require("gulp");
 const sass = require("gulp-sass")(require("sass"));
 let autoprefixer;
-import('gulp-autoprefixer').then(module => autoprefixer = module.default);
+import("gulp-autoprefixer").then((module) => (autoprefixer = module.default));
 const cleanCSS = require("gulp-clean-css");
 const pug = require("gulp-pug");
 const rename = require("gulp-rename");
@@ -64,7 +64,12 @@ function copyFavicons() {
 // Copy additional asset folders task
 function copyAssets() {
   return gulp
-    .src(paths.src.additionalAssets)
+    .src(paths.src.additionalAssets, {
+      base: "app",
+      encoding: false,
+      buffer: true,
+      removeBOM: false,
+    })
     .pipe(gulp.dest(paths.dest.additionalAssets));
 }
 
@@ -76,24 +81,24 @@ function copyPackageJson() {
 // Compile Sass task
 async function sassTask() {
   if (!autoprefixer) {
-      autoprefixer = (await import('gulp-autoprefixer')).default;
+    autoprefixer = (await import("gulp-autoprefixer")).default;
   }
   return gulp
-      .src(paths.src.styles)
-      .pipe(
-          sass({
-              includePaths: ["node_modules"],
-          }).on("error", sass.logError)
-      )
-      .pipe(autoprefixer())
-      .pipe(cleanCSS())
-      .pipe(
-          rename({
-              extname: ".min.css",
-          })
-      )
-      .pipe(gulp.dest(paths.dest.css))
-      .pipe(browserSync.stream());
+    .src(paths.src.styles)
+    .pipe(
+      sass({
+        includePaths: ["node_modules"],
+      }).on("error", sass.logError)
+    )
+    .pipe(autoprefixer())
+    .pipe(cleanCSS())
+    .pipe(
+      rename({
+        extname: ".min.css",
+      })
+    )
+    .pipe(gulp.dest(paths.dest.css))
+    .pipe(browserSync.stream());
 }
 
 // Bundle JS task
@@ -214,19 +219,18 @@ function copyRobotsTxt() {
 const build = gulp.series(
   cleanTask,
   gulp.parallel(
-    copyFonts,
     copyFavicons,
     copyAssets,
     copyPackageJson,
     sassTask,
+    copyFonts,
     jsTask,
     pugTask,
     pug404Task,
-   
     copyRobotsTxt
   ),
   prettifyHtmlTask,
-  "sitemap",
+  "sitemap"
 );
 
 // Default task
